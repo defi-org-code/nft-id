@@ -1,5 +1,6 @@
 import { ensureDBIsReady, fetchVerifiedRequest } from "./data-access";
 import { viewPage } from "./page";
+import { extractAssetFromNFTContract, extractOwnerFromNFTContract } from "./web3";
 
 export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
@@ -7,6 +8,14 @@ export const reader_fetchVerifiedRequest = catchErrors.bind(
 
 export const reader_viewPage = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(viewPage))
+);
+
+export const reader_extractOwnerFromNFTContract = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(extractOwnerFromNFTContract))
+);
+
+export const reader_extractAssetFromNFTContract = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(extractAssetFromNFTContract))
 );
 
 // (async () => {

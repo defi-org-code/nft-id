@@ -100,6 +100,22 @@ functions:
           path: viewPage/{firstPathParam}
           method: get
           cors: true
+  reader_extractOwnerFromNFTContract:
+    handler: dist/index.reader_extractOwnerFromNFTContract
+    fileSystemConfig: ${file(./serverless-fs.yml)}
+    events:
+      - http:
+          path: extractOwnerFromNFTContract/{contractAddress}/{tokenId}
+          method: get
+          cors: true
+  reader_extractAssetFromNFTContract:
+    handler: dist/index.reader_extractAssetFromNFTContract
+    fileSystemConfig: ${file(./serverless-fs.yml)}
+    events:
+      - http:
+          path: extractAssetFromNFTContract/{contractAddress}/{tokenId}
+          method: get
+          cors: true
 #  reader_fetchTopEntities:
 #    handler: dist/index.reader_fetchTopEntities
 #    fileSystemConfig: ${file(./serverless-fs.yml)}
