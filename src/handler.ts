@@ -1,7 +1,12 @@
 import { ensureDBIsReady, fetchVerifiedRequest } from "./data-access";
+import { viewPage } from "./page";
 
 export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
+);
+
+export const reader_viewPage = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(viewPage))
 );
 
 // (async () => {

@@ -88,6 +88,18 @@ functions:
                     openseaUrl: true
               method: get
               cors: true
+  reader_viewPage:
+    handler: dist/index.reader_viewPage
+    fileSystemConfig: ${file(./serverless-fs.yml)}
+    events:
+      - http:
+          path: viewPage/{contractAddress}/{tokenId}
+          method: get
+          cors: true
+      - http:
+          path: viewPage/{twitterHandle}
+          method: get
+          cors: true
 #  reader_fetchTopEntities:
 #    handler: dist/index.reader_fetchTopEntities
 #    fileSystemConfig: ${file(./serverless-fs.yml)}
