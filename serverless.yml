@@ -77,13 +77,17 @@ functions:
 #          cors: true
   ###### Readers ######
   reader_helloWorld:
-    handler: dist/index.reader_helloWorld
+    handler: dist/index.reader_fetchVerifiedRequest
     fileSystemConfig: ${file(./serverless-fs.yml)}
     events:
-      - http:
-          path: helloWorld
-          method: get
-          cors: true
+          - http:
+              path: fetchVerifiedRequest
+              request:
+                parameters:
+                  querystrings:
+                    openseaUrl: true
+              method: get
+              cors: true
 #  reader_fetchTopEntities:
 #    handler: dist/index.reader_fetchTopEntities
 #    fileSystemConfig: ${file(./serverless-fs.yml)}

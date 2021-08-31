@@ -1,10 +1,7 @@
+import { ensureDBIsReady, fetchVerifiedRequest } from "./data-access";
 
-const _helloWorld = () => {
-  return success('Hello World');
-};
-
-export const reader_hello_world = catchErrors.bind(
-  beforeRunningFunc.bind(_helloWorld)
+export const reader_fetchVerifiedRequest = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
 );
 
 // import path from "path";
@@ -653,12 +650,12 @@ function success(result: any, _continue?: boolean) {
   return response;
 }
 
-async function beforeRunningFunc(this: any, dbPrefix: string | null, event: any, context: any) {
-  // const listId = event.pathParameters ? event.pathParameters.listId : null;
-  // if (listId && listId !== "1413118800363458560") {
-  //   return success("Currently only 1413118800363458560 list is supported");
-  // }
-  // ensureDBIsReady(listId || dbPrefix || "all");
+async function returnFunc(this: any, event: any, context: any) {
+  success(this(event, context));
+}
+
+async function beforeRunningFunc(this: any, event: any, context: any) {
+  await ensureDBIsReady();
   return await this(event, context);
 }
 
