@@ -1,12 +1,17 @@
 import path from "path";
 import sqlite3, { Database } from "better-sqlite3";
+import fs from "fs-extra";
 
-const DB_PATH = path.resolve(process.env.HOME_DIR!!, "nft-id.db");
+const HOME_DIR = process.env.HOME_DIR!!;
+const DB_PATH = path.resolve(HOME_DIR, "nft-id.db");
 
 let db: Database;
 
 export const ensureDBIsReady = () => {
   if (!db) {
+    if (fs.existsSync(HOME_DIR))
+      fs.mkdirsSync(HOME_DIR);
+    }
     db = sqlite3(DB_PATH);
 
     db.exec(
