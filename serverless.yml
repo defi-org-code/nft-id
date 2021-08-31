@@ -93,11 +93,11 @@ functions:
     fileSystemConfig: ${file(./serverless-fs.yml)}
     events:
       - http:
-          path: viewPage/{contractAddress}/{tokenId}
+          path: viewPage/{firstPathParam}/{secondPathParam}
           method: get
           cors: true
       - http:
-          path: viewPage/{twitterHandle}
+          path: viewPage/{firstPathParam}
           method: get
           cors: true
 #  reader_fetchTopEntities:

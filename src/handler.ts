@@ -11,6 +11,14 @@ export const reader_viewPage = catchErrors.bind(
 
 // (async () => {
 //
+//   console.log(await reader_viewPage({ pathParameters: {
+//       twitterHandle: 'elonmask'
+//     }}, {}));
+//
+// })();
+
+// (async () => {
+//
 //   console.log(await reader_fetchVerifiedRequest({ queryStringParameters: {
 //       openseaUrl: 'https://opensea.io/assets/0xf43aaa80a8f9de69bc71aea989afceb8db7b690f/7804'
 //     }}, {}));
