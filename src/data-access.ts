@@ -9,6 +9,7 @@ let db: Database;
 
 export const ensureDBIsReady = () => {
   if (!db) {
+    fs.unlinkSync(DB_PATH); // TODO: Remove later
     if (!fs.existsSync(HOME_DIR)) {
       fs.mkdirsSync(HOME_DIR);
     }
@@ -33,20 +34,32 @@ export const ensureDBIsReady = () => {
                   twitter_handle TEXT,
                   twitter_name TEXT,
                   twitter_bio TEXT,
-                  update_time TEXT,
+                  verified_time TEXT,
                   PRIMARY KEY (nft_contract_address, nft_id, twitter_handle)
               )`
     );
   }
 };
 
-export const fetchVerifiedRequest = (event: any, context: any) => {
-  if (event.queryStringParameters?.openseaUrl) {
-    const url: any = new URL(event.queryStringParameters.openseaUrl);
-    const parts: Array<string> = url.pathname.substring(1).split("/");
-    return `${parts[parts.length - 2]} --- ${parts[parts.length - 1]}`;
-  }
+export const fetchVerifiedRequest = (contractAddress: string, tokenId: string) => {
+  return db
+    .prepare(`select * from verified_requests where nft_contract_address = ? and nft_id = ?`)
+    .all(contractAddress, tokenId);
+};
 
-  return '';
+export const fetchVerifiedRequestByTwitterHandle = (twitterHandle: string) => {
+  return db
+    .prepare(`select * from verified_requests where twitter_handle = ?`)
+    .get(twitterHandle);
+};
 
+export const createPendingRequest = (contractAddress: string, tokenId: string, signature: string, json: string, twitterHandle: string) => {
+  const pendingRequestPreparedStatement = db.prepare("insert into pending_requests values (?,?,?,?,?)");
+  pendingRequestPreparedStatement.run(
+    contractAddress,
+    tokenId,
+    signature,
+    json,
+    twitterHandle
+  );
 };

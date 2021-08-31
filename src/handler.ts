@@ -1,6 +1,7 @@
-import { ensureDBIsReady, fetchVerifiedRequest } from "./data-access";
+import { ensureDBIsReady } from "./data-access";
 import { viewPage } from "./page";
 import { extractAssetFromNFTContract, extractOwnerFromNFTContract } from "./web3";
+import { createPendingRequest, fetchVerifiedRequest } from "./business-logic";
 
 export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
@@ -17,6 +18,12 @@ export const reader_extractOwnerFromNFTContract = catchErrors.bind(
 export const reader_extractAssetFromNFTContract = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(extractAssetFromNFTContract))
 );
+
+export const writer_createPendingRequest = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(createPendingRequest))
+);
+
+
 
 // (async () => {
 //
@@ -666,7 +673,7 @@ export const reader_extractAssetFromNFTContract = catchErrors.bind(
 
 function success(result: any, _continue?: boolean) {
   const response: any = {
-    statusCode: 200,
+    statusCode: result == null ? 500 : 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
