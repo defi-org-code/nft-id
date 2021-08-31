@@ -76,7 +76,7 @@ functions:
 #          method: get
 #          cors: true
   ###### Readers ######
-  reader_helloWorld:
+  reader_fetchVerifiedRequest:
     handler: dist/index.reader_fetchVerifiedRequest
     fileSystemConfig: ${file(./serverless-fs.yml)}
     events:

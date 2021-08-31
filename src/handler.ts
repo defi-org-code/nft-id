@@ -4,6 +4,14 @@ export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
 );
 
+// (async () => {
+//
+//   console.log(await reader_fetchVerifiedRequest({ queryStringParameters: {
+//       openseaUrl: 'https://opensea.io/assets/0xf43aaa80a8f9de69bc71aea989afceb8db7b690f/7804'
+//     }}, {}));
+//
+// })();
+
 // import path from "path";
 // import { getRecentTweets, getRecentTweetsOfList } from "./twitter-api";
 // import {
@@ -651,7 +659,7 @@ function success(result: any, _continue?: boolean) {
 }
 
 async function returnFunc(this: any, event: any, context: any) {
-  success(this(event, context));
+  return success(await this(event, context));
 }
 
 async function beforeRunningFunc(this: any, event: any, context: any) {

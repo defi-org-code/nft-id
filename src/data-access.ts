@@ -44,9 +44,9 @@ export const fetchVerifiedRequest = (event: any, context: any) => {
   if (event.queryStringParameters?.openseaUrl) {
     const url: any = new URL(event.queryStringParameters.openseaUrl);
     const parts: Array<string> = url.pathname.substring(1).split("/");
-    return `${parts[0]} --- ${parts[1]}`;
+    return `${parts[parts.length - 2]} --- ${parts[parts.length - 1]}`;
   }
 
-  return null;
+  return '';
 
 };

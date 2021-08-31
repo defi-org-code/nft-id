@@ -4,15 +4,6 @@
   "description": "NFT ID",
   "license": "MIT",
   "author": "defi.org",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/defi-org-code/serverless-template.git"
-  },
-  "bugs": {
-    "url": "https://github.com/defi-org-code/serverless-template/issues"
-  },
-  "homepage": "https://github.com/defi-org-code/serverless-template#readme",
-  "main": "dist/index.js",
   "dependencies": {
     "better-sqlite3": "^7.4.1",
     "fs-extra": "^10.0.0",
