@@ -144,14 +144,10 @@ export const deletePreviousPendingRequest = (
 };
 
 export const deletePreviousVerifiedRequest = (
-  contractAddress: string,
-  tokenId: string,
   twitterHandle: string,
 ) => {
-  const deleteVerifiedRequestPreparedStatement = db.prepare("delete from verified_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ?");
+  const deleteVerifiedRequestPreparedStatement = db.prepare("delete from verified_requests where twitter_handle = ?");
   deleteVerifiedRequestPreparedStatement.run(
-    contractAddress,
-    tokenId,
     twitterHandle
   );
 };

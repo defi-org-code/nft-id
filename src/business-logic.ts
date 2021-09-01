@@ -60,7 +60,7 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
       const pendingRequest = DataAccess.fetchPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.user.screen_name);
       if (await verifyNFTOwnership(pendingRequest.signature, pendingRequest.json, tokenInfo)) {
         DataAccess.deletePreviousPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.user.screen_name);
-        DataAccess.deletePreviousVerifiedRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.user.screen_name);
+        DataAccess.deletePreviousVerifiedRequest(tweet.user.screen_name);
         DataAccess.createVerifiedRequest(
           tokenInfo.contractAddress,
           tokenInfo.tokenId,
@@ -70,9 +70,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
           tweet.id_str,
           tweet.user.screen_name,
           tweet.user.description,
-          await extractAssetFromNFTContractByTokenInfo(tokenInfo)
+          pendingRequest.nft_image
         );
-        console.log('rote');
       }
     } catch (ignore) {
     }
