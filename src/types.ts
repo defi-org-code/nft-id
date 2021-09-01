@@ -8,6 +8,7 @@ export type User = {
   profile_image_url_https: string;
   name: string;
   screen_name: string;
+  description: string;
 };
 
 export type Entities = {
@@ -62,6 +63,7 @@ export type RecentResults = {
   statuses: Array<Status>;
   search_metadata: {
     next_results: string | null;
+    max_id_str: string;
   };
 };
 

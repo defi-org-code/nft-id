@@ -65,6 +65,7 @@ functions:
   writer_createPendingRequest:
     handler: dist/index.writer_createPendingRequest
     fileSystemConfig: ${file(./serverless-fs.yml)}
+    timeout: 60
     events:
       - http:
           path: createPendingRequest
@@ -74,6 +75,12 @@ functions:
                 openseaUrl: true
           method: get
           cors: true
+  writer_searchAndVerifyTweets:
+    handler: dist/index.writer_searchAndVerifyTweets
+    fileSystemConfig: ${file(./serverless-fs.yml)}
+    timeout: 60
+    events:
+      - schedule: rate(1 minutes)
   ###### Readers ######
   reader_fetchVerifiedRequest:
     handler: dist/index.reader_fetchVerifiedRequest
@@ -92,6 +99,7 @@ functions:
   reader_viewPage:
     handler: dist/index.reader_viewPage
     fileSystemConfig: ${file(./serverless-fs.yml)}
+    timeout: 12
     events:
       - http:
           path: viewPage/{firstPathParam}/{secondPathParam}
@@ -104,6 +112,7 @@ functions:
   reader_extractOwnerFromNFTContract:
     handler: dist/index.reader_extractOwnerFromNFTContract
     fileSystemConfig: ${file(./serverless-fs.yml)}
+    timeout: 12
     events:
       - http:
           path: extractOwnerFromNFTContract/{contractAddress}/{tokenId}
@@ -112,6 +121,7 @@ functions:
   reader_extractAssetFromNFTContract:
     handler: dist/index.reader_extractAssetFromNFTContract
     fileSystemConfig: ${file(./serverless-fs.yml)}
+    timeout: 12
     events:
       - http:
           path: extractAssetFromNFTContract/{contractAddress}/{tokenId}

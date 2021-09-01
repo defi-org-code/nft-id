@@ -1,7 +1,9 @@
 import { ensureDBIsReady } from "./data-access";
 import { viewPage } from "./page";
 import { extractAssetFromNFTContract, extractOwnerFromNFTContract } from "./web3";
-import { createPendingRequest, fetchVerifiedRequest } from "./business-logic";
+import { createPendingRequest, fetchVerifiedRequest, searchAndVerifyTweets } from "./business-logic";
+
+const SECRETS = process.env.REPO_SECRETS_JSON ? JSON.parse(process.env.REPO_SECRETS_JSON) : {};
 
 export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
@@ -23,15 +25,24 @@ export const writer_createPendingRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(createPendingRequest))
 );
 
+export const writer_searchAndVerifyTweets = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(searchAndVerifyTweets.bind(null, SECRETS.BEARER_TOKEN)))
+);
 
+(async () => {
 
-// (async () => {
-//
-//   console.log(await reader_viewPage({ pathParameters: {
-//       twitterHandle: 'elonmask'
-//     }}, {}));
-//
-// })();
+  //console.log(await writer_searchAndVerifyTweets({}, {}));
+
+// console.log(await writer_createPendingRequest(
+//     {
+//       queryStringParameters: {
+//         signature: '0xff7480f14a77ba0ba162856f804dc361a9c00ca0aeeb77f73bd8ae8c0b4966b07c26611adf3ebab9f7c2c6d588a5e38e811fb734b8466b50c1ed3893ffdb1b331b',
+//         json: '{"twitterHandle":"yakirrotem"}',
+//         openseaUrl: 'https://opensea.io/assets/0x9a604220d37b69c09effccd2e8475740773e3daf/1650',
+//       }
+//     }, {}));
+
+})();
 
 // (async () => {
 //

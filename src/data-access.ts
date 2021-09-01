@@ -1,6 +1,7 @@
 import path from "path";
 import sqlite3, { Database } from "better-sqlite3";
 import fs from "fs-extra";
+import exp from "constants";
 
 const HOME_DIR = process.env.HOME_DIR!!;
 const DB_PATH = path.resolve(HOME_DIR, "nft-id.db");
@@ -9,7 +10,9 @@ let db: Database;
 
 export const ensureDBIsReady = () => {
   if (!db) {
-    fs.unlinkSync(DB_PATH); // TODO: Remove later
+    // if (fs.existsSync(DB_PATH)) {
+    //   fs.unlinkSync(DB_PATH); // TODO: Remove later
+    // }
     if (!fs.existsSync(HOME_DIR)) {
       fs.mkdirsSync(HOME_DIR);
     }
@@ -22,6 +25,7 @@ export const ensureDBIsReady = () => {
                   signature TEXT, 
                   json TEXT,
                   twitter_handle TEXT,
+                  nft_image TEXT,
                   PRIMARY KEY (nft_contract_address, nft_id, twitter_handle)
               )`
     );
@@ -32,13 +36,28 @@ export const ensureDBIsReady = () => {
                   signature TEXT, 
                   json TEXT,
                   twitter_handle TEXT,
+                  tweet_id TEXT,
                   twitter_name TEXT,
                   twitter_bio TEXT,
+                  nft_image TEXT,
                   verified_time TEXT,
                   PRIMARY KEY (nft_contract_address, nft_id, twitter_handle)
               )`
     );
+    db.exec(
+      `CREATE TABLE IF NOT EXISTS settings (
+                  name TEXT, 
+                  value TEXT, 
+                  PRIMARY KEY (name)
+              )`
+    );
   }
+};
+
+export const fetchPendingRequest = (contractAddress: string, tokenId: string, twitterHandle: string) => {
+  return db
+    .prepare(`select * from pending_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ?`)
+    .get(contractAddress, tokenId, twitterHandle);
 };
 
 export const fetchVerifiedRequest = (contractAddress: string, tokenId: string) => {
@@ -53,13 +72,87 @@ export const fetchVerifiedRequestByTwitterHandle = (twitterHandle: string) => {
     .get(twitterHandle);
 };
 
-export const createPendingRequest = (contractAddress: string, tokenId: string, signature: string, json: string, twitterHandle: string) => {
-  const pendingRequestPreparedStatement = db.prepare("insert into pending_requests values (?,?,?,?,?)");
+export const fetchSetting = (setting: string) => {
+  return db
+    .prepare(`select * from settings where name = ?`)
+    .get(setting);
+};
+
+export const upsertSetting = (setting: string, value: string) => {
+  const upsertSettingPreparedStatement = db.prepare(
+    `Insert INTO settings(name,value) values (?,?)
+            ON CONFLICT (name) DO UPDATE SET value = ?`
+  );
+  upsertSettingPreparedStatement.run(setting, value, value);
+};
+
+export const createPendingRequest = (
+  contractAddress: string,
+  tokenId: string,
+  signature: string,
+  json: string,
+  twitterHandle: string,
+  nftImage: string
+) => {
+  const pendingRequestPreparedStatement = db.prepare("insert into pending_requests values (?,?,?,?,?,?)");
   pendingRequestPreparedStatement.run(
     contractAddress,
     tokenId,
     signature,
     json,
+    twitterHandle,
+    nftImage
+  );
+};
+
+export const createVerifiedRequest = (
+  contractAddress: string,
+  tokenId: string,
+  signature: string,
+  json: string,
+  twitterHandle: string,
+  tweetId: string,
+  twitterName: string,
+  twitterBio: string,
+  nftImage: string
+) => {
+  const verifiedRequestPreparedStatement = db.prepare("insert into verified_requests values (?,?,?,?,?,?,?,?,?,datetime())");
+  verifiedRequestPreparedStatement.run(
+    contractAddress,
+    tokenId,
+    signature,
+    json,
+    twitterHandle,
+    tweetId,
+    twitterName,
+    twitterBio,
+    nftImage
+  );
+};
+
+export const deletePreviousPendingRequest = (
+  contractAddress: string,
+  tokenId: string,
+  twitterHandle: string,
+) => {
+  const deletePendingRequestPreparedStatement = db.prepare("delete from pending_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ?");
+  deletePendingRequestPreparedStatement.run(
+    contractAddress,
+    tokenId,
     twitterHandle
   );
 };
+
+export const deletePreviousVerifiedRequest = (
+  contractAddress: string,
+  tokenId: string,
+  twitterHandle: string,
+) => {
+  const deleteVerifiedRequestPreparedStatement = db.prepare("delete from verified_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ?");
+  deleteVerifiedRequestPreparedStatement.run(
+    contractAddress,
+    tokenId,
+    twitterHandle
+  );
+};
+
