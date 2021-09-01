@@ -1,0 +1,109 @@
+<div class="form-group width800">
+    <div class="header ">Register your NFT</div>
+    <p>Here you can cmobine the proof a twitter account and a proof Nft ownership</p>
+    <div class="field is-grouped">
+
+    </div>
+    <div class="field">
+        <label class="label">1. Twitter Handle</label>
+        <input class="input" type="text" id="twitterHandle" placeholder="@elonmusk" value="{{twitterHandle}}"/>
+    </div>
+    <div class="field">
+        <label class="label">2. Assets Url</label>
+        <div class="control">
+            <input type="text" class="input" id="nftAddress" value="{{nftAddress}}" placeholder="https://opensea.io/assets/0x76be3b62873462d2142405439777e971754e8e77/10089">
+        </div>
+    </div>
+    <div class="field" id="mm-section" style="display:none">
+        <div class="label">3. Login with metaMask</div>
+        <button class="button is-link"id="mmLoginBtn" >Login with Metamask</button>
+        <div class="col-" id="usersAddress"></div>
+    </div>
+
+    <div class="field" id="sign-section" style="display:none">
+        <div class="label">4. Sign Message to prove NFT ownership</div>
+        <input type="text" class="input"  id="messageToSign" />
+        <br>
+        <button class="button" id="signBtn" >Sign Message</button>
+        <div class="label">Signature</div>
+        <input type="text" class="input" id="signature"></div>
+    </div>
+
+    <div class="field" id="register-btn" style="display:none">
+        <div class="label">5. Submit Details</div>
+        <button  class="button is-primary" >register</button>
+    </div>
+    
+    <div class="field" id="twitter-section" style="display:none">
+        <div class="label">6. Twit using the button below to proof twitter account</div>
+        <a href="https://twitter.com/intent/tweet?button_hashtag=nftid&ref_src=twsrc%5Etfw&Text=My%20Nft%20is%20verified%20using%20NFTiD"  data-text="I'm Verifiyng my avatar on twitter using NFT.iD #nftid" data-size="large" class="twitter-hashtag-button" data-show-count="false">Link Accountto #NFTiD</a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+
+    document.addEventListener("DOMContentLoaded",()=> {
+        document.querySelector('#mmLoginBtn').addEventListener("click", bindConnectMM);
+        document.querySelector('#signBtn').addEventListener("click", onSign);
+        document.querySelector('#twitterHandle').addEventListener("input", validateFrom)
+        document.querySelector('#nftAddress').addEventListener("input", validateFrom)
+        document.querySelector('#register-btn').addEventListener("click", onRegister);
+    })
+
+    let messageToSign = '';
+    let account = '';
+    let web;
+
+    async function bindConnectMM() {
+        if (typeof window.ethereum === 'undefined') {
+            console.log('MetaMask is not installed!');
+            return;
+        }
+
+        const accounts  = await ethereum.request({ method: 'eth_requestAccounts' });
+        account = accounts[0];
+        web3 = new Web3(window.ethereum);
+
+        let twitterHandle = document.querySelector('#twitterHandle').value;;
+        document.querySelector('#usersAddress').value = account;
+        messageToSign = `{ twitterUsername : ${twitterHandle} }`
+        document.querySelector('#messageToSign').value = messageToSign;
+        document.querySelector("#sign-section").style.display = 'block';
+    }
+
+    async function onSign() {
+        if(!messageToSign) {
+            return
+        }
+        let signData = JSON.stringify(messageToSign);
+        var signature = await window.web3.eth.personal.sign(signData, account);
+        document.querySelector('#signature').value = signature;
+        document.querySelector('#register-btn').style.display = 'block';
+    }
+
+    function validateFrom() {
+        let twitterHandle = document.querySelector('#twitterHandle').value;;
+        let nftAddress = document.querySelector('#nftAddress').value;
+        if(twitterHandle.length > 0 && nftAddress.length > 0) {
+            document.querySelector('#mm-section').style.display = 'block';
+        }
+    }
+
+    function onFormValid() {
+
+        let btn = document.querySelector('#register-btn');
+        btn.style.display = 'block';
+        btn.addEventListener('click', ()=> {
+            let twitterHandle = document.querySelector('#twitterHandle').value;;
+            let nftAddress = document.querySelector('#nftAddress').value;
+            let signature = document.querySelector('#signature').value;
+        })
+    }
+
+    function onRegister() {
+        document.querySelector('#twitter-section').style.display = 'block';
+    }
+
+</script>

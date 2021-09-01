@@ -43,7 +43,50 @@ export const writer_searchAndVerifyTweets = catchErrors.bind(
 //     }, {}));
 
 })();
-
+// (async () => {
+//   let resp = await reader_viewPage({ pathParameters: {
+//     twitterHandle: 'elonmask',
+//   }}, {});
+//
+//   let body = JSON.parse(resp.body);
+//   console.dir(body.body);
+//   fs.writeFileSync('./html/twitterHandle.html', body.body,'utf8');
+//
+// })();
+//
+//
+//
+// (async () => {
+//   let resp = await reader_viewPage ({ pathParameters: {
+//     contractAddress: '0x76be3b62873462d2142405439777e971754e8e77',
+//     tokenId: '10089'
+//   }}, {});
+//
+//   let body = JSON.parse(resp.body);
+//   console.dir(body.body);
+//   fs.writeFileSync('./html/nftAddress.html', body.body,'utf8');
+//
+// })();
+//
+//
+// (async () => {
+//   let resp = await reader_extractOwnerFromNFTContract ({ pathParameters: {
+//     contractAddress: '0x60e4d786628fea6478f785a6d7e704777c86a7c6',
+//     tokenId: '29496'
+//   }}, {});
+//   console.log(` ============ Extract Owner from Contract =========`)
+//   console.log(resp);
+// })();
+//
+//
+// (async () => {
+//   let resp = await reader_extractAssetFromNFTContract ({ pathParameters: {
+//     contractAddress: '0x60e4d786628fea6478f785a6d7e704777c86a7c6',
+//     tokenId: '29496'
+//   }}, {});
+//   console.log(` ============ Extract Image from Contract+TokenId =========`)
+//   console.log(resp);
+// })();
 // (async () => {
 //
 //   console.log(await reader_fetchVerifiedRequest({ queryStringParameters: {

@@ -33,7 +33,7 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
   let response = '';
   try {
     console.log(tokenUri);
-    let res = await needle('get', tokenUri);
+    let res = await needle('get', tokenUri.replace('ipfs://','https://ipfs.io/ipfs/'));
     if (res.body) {
       response = res.body?.image.replace('ipfs://','https://ipfs.io/ipfs/');
     }
