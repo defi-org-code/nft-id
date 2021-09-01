@@ -9,9 +9,9 @@ let db: Database;
 
 export const ensureDBIsReady = () => {
   if (!db) {
-    if (fs.existsSync(DB_PATH)) {
-      fs.unlinkSync(DB_PATH); // TODO: Remove later
-    }
+    // if (fs.existsSync(DB_PATH)) {
+    //   fs.unlinkSync(DB_PATH); // TODO: Remove later
+    // }
     if (!fs.existsSync(HOME_DIR)) {
       fs.mkdirsSync(HOME_DIR);
     }
