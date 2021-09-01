@@ -42,10 +42,10 @@
   <body>
     <section class="section">
         <div class="container">
-            {{#if isNftRegisterd }}
-                {{> nftcard }}
+            {{#if isNFTVerified }}
+                {{> nft-card }}
             {{else}}
-                {{> register }}
+                {{> empty-card }}
             {{/if}}
         </div>
     </section>

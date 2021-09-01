@@ -69,11 +69,7 @@ functions:
     events:
       - http:
           path: createPendingRequest
-          request:
-            parameters:
-              querystrings:
-                openseaUrl: true
-          method: get
+          method: post
           cors: true
   writer_searchAndVerifyTweets:
     handler: dist/index.writer_searchAndVerifyTweets
@@ -96,17 +92,26 @@ functions:
                     openseaUrl: true
               method: get
               cors: true
-  reader_viewPage:
-    handler: dist/index.reader_viewPage
+  reader_viewNFTPage:
+    handler: dist/index.reader_viewNFTPage
     fileSystemConfig: ${file(./serverless-fs.yml)}
     timeout: 12
     events:
       - http:
-          path: viewPage/{firstPathParam}/{secondPathParam}
+          path: nftPage/{firstPathParam}/{secondPathParam}
           method: get
           cors: true
       - http:
-          path: viewPage/{firstPathParam}
+          path: nftPage/{firstPathParam}
+          method: get
+          cors: true
+  reader_viewRegisterPage:
+    handler: dist/index.reader_viewRegisterPage
+    fileSystemConfig: ${file(./serverless-fs.yml)}
+    timeout: 12
+    events:
+      - http:
+          path: register
           method: get
           cors: true
   reader_extractOwnerFromNFTContract:

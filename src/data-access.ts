@@ -1,7 +1,6 @@
 import path from "path";
 import sqlite3, { Database } from "better-sqlite3";
 import fs from "fs-extra";
-import exp from "constants";
 
 const HOME_DIR = process.env.HOME_DIR!!;
 const DB_PATH = path.resolve(HOME_DIR, "nft-id.db");
@@ -41,6 +40,7 @@ export const ensureDBIsReady = () => {
                   twitter_bio TEXT,
                   nft_image TEXT,
                   verified_time TEXT,
+                  owner_public_key TEXT,
                   PRIMARY KEY (nft_contract_address, nft_id, twitter_handle)
               )`
     );
@@ -114,9 +114,10 @@ export const createVerifiedRequest = (
   tweetId: string,
   twitterName: string,
   twitterBio: string,
-  nftImage: string
+  nftImage: string,
+  ownerPublicKey: string,
 ) => {
-  const verifiedRequestPreparedStatement = db.prepare("insert into verified_requests values (?,?,?,?,?,?,?,?,?,datetime())");
+  const verifiedRequestPreparedStatement = db.prepare("insert into verified_requests values (?,?,?,?,?,?,?,?,?,datetime(),?)");
   verifiedRequestPreparedStatement.run(
     contractAddress,
     tokenId,
@@ -126,7 +127,8 @@ export const createVerifiedRequest = (
     tweetId,
     twitterName,
     twitterBio,
-    nftImage
+    nftImage,
+    ownerPublicKey
   );
 };
 

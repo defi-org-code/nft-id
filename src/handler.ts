@@ -1,5 +1,5 @@
 import { ensureDBIsReady } from "./data-access";
-import { viewPage } from "./page";
+import { viewNFTPage, viewRegisterPage } from "./page";
 import { extractAssetFromNFTContract, extractOwnerFromNFTContract } from "./web3";
 import { createPendingRequest, fetchVerifiedRequest, searchAndVerifyTweets } from "./business-logic";
 
@@ -9,8 +9,12 @@ export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
 );
 
-export const reader_viewPage = catchErrors.bind(
-  beforeRunningFunc.bind(returnFunc.bind(viewPage))
+export const reader_viewNFTPage = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(viewNFTPage))
+);
+
+export const reader_viewRegisterPage = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(viewRegisterPage))
 );
 
 export const reader_extractOwnerFromNFTContract = catchErrors.bind(
@@ -29,7 +33,28 @@ export const writer_searchAndVerifyTweets = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(searchAndVerifyTweets.bind(null, SECRETS.BEARER_TOKEN)))
 );
 
+//
+// const http = require('http');
+//
+// const hostname = '127.0.0.1';
+// const port = 3000;
+//
+// const server = http.createServer(async (req: any, res: any) => {
+//   res.statusCode = 200;
+//   res.setHeader('Content-Type', 'text/html');
+//   const resp = await reader_viewRegisterPage({}, {});
+//   const page = JSON.parse(resp.body);
+//   res.end(page.body);
+// });
+//
+// server.listen(port, hostname, () => {
+//   console.log(`Server running at http://${hostname}:${port}/`);
+// });
+
+
 (async () => {
+
+
 
   //console.log(await writer_searchAndVerifyTweets({}, {}));
 

@@ -1,9 +1,4 @@
-import {
-  extractAssetFromNFTContract, extractAssetFromNFTContractByTokenInfo,
-  extractOwnerFromNFTContract,
-  extractOwnerFromNFTContractByTokenInfo,
-  verifySignature
-} from "./web3";
+import { extractAssetFromNFTContract, extractOwnerFromNFTContractByTokenInfo, verifySignature } from "./web3";
 import * as DataAccess from "./data-access";
 import * as Twitter from "./twitter-api";
 
@@ -26,9 +21,11 @@ export const fetchVerifiedRequest = (event: any, context: any) => {
 };
 
 export const createPendingRequest = async (event: any, context: any) => {
-  const signature = event.queryStringParameters?.signature;
-  const json = event.queryStringParameters?.json;
-  const tokenInfo = extractContractAddressAndTokenIdFromURL(event.queryStringParameters?.openseaUrl);
+  const data = JSON.parse(event.body);
+  const signature = data.signature;
+  const json = data.json;
+  console.log("data", data);
+  const tokenInfo = extractContractAddressAndTokenIdFromURL(data.openseaUrl);
 
   if (await verifyNFTOwnership(signature, json, tokenInfo)) {
     const nftImage = await extractAssetFromNFTContract(event, context);
@@ -40,13 +37,15 @@ export const createPendingRequest = async (event: any, context: any) => {
   return null;
 };
 
-export const verifyNFTOwnership = async (signature: string, json: string, tokenInfo: any): Promise<boolean> => {
+export const verifyNFTOwnership = async (signature: string, json: string, tokenInfo: any): Promise<string | null> => {
   try {
     const publicKey = verifySignature(signature, json); // Will throw exception if signature not matches json
-    return publicKey === (await extractOwnerFromNFTContractByTokenInfo(tokenInfo));
+    if (publicKey === (await extractOwnerFromNFTContractByTokenInfo(tokenInfo))) {
+      return publicKey;
+    }
   } catch (ignore) {
-    return false;
   }
+  return null;
 };
 
 export const searchAndVerifyTweets = async (bearerToken: string, event: any, context: any) => {
@@ -58,7 +57,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
     try {
       const tokenInfo = extractContractAddressAndTokenIdFromURL(tweet.entities.urls[0].expanded_url);
       const pendingRequest = DataAccess.fetchPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.user.screen_name);
-      if (await verifyNFTOwnership(pendingRequest.signature, pendingRequest.json, tokenInfo)) {
+      const ownerPublicKey = await verifyNFTOwnership(pendingRequest.signature, pendingRequest.json, tokenInfo);
+      if (ownerPublicKey) {
         DataAccess.deletePreviousPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.user.screen_name);
         DataAccess.deletePreviousVerifiedRequest(tweet.user.screen_name);
         DataAccess.createVerifiedRequest(
@@ -70,7 +70,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
           tweet.id_str,
           tweet.user.screen_name,
           tweet.user.description,
-          pendingRequest.nft_image
+          pendingRequest.nft_image,
+          ownerPublicKey
         );
       }
     } catch (ignore) {
