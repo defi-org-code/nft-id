@@ -1,5 +1,7 @@
+const SECRETS = process.env.REPO_SECRETS_JSON ? JSON.parse(process.env.REPO_SECRETS_JSON) : {};
+
 import Web3 from 'web3';
-const provider = new Web3.providers.HttpProvider("https://eth-mainnet.alchemyapi.io/v2/DslGjSBuTemuGqCb_moH09X8miuAPPYE");
+const provider = new Web3.providers.HttpProvider(SECRETS.WEB3_PROVIDER);
 const web3 = new Web3(provider);
 import { extractContractAddressAndTokenIdFromURL } from "./business-logic";
 import { AbiItem } from "web3-utils";
