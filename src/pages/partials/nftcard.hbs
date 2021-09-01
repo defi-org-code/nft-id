@@ -1,7 +1,47 @@
 <div>
-    <h2 class="twitter-handle">@{{twitterHandle}}</h2>
-    <a href="https://opensea.io/assets/{{nftAddress}}">{{nftAddress}}</a>
-    <div>
+    <div class="center">
+        <div class="twitter-handle">@{{twitterHandle}}</div>
+    </div>
+    <a href="https://opensea.io/assets/{{nftAddress}}">opensea</a>
+    
+    <div class="nft-image">
       <img src={{ nftImage }}>
     </div>
+
+    <div class="container nft-meta">
+
+    <div class="columns">
+        <div class="column is-two-fifths">
+            Asset
+        </div>
+        <div class="column">
+            <a href={{nftAddress}}>link</a>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-two-fifths">
+            Owner
+        </div>
+        <div class="column ">
+            <a href="https://etherscan.io/address/{{owner}}">account on etherscan <b>{{owner}}</b></a>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-two-fifths">
+            Signature
+        </div>
+        <div class="column is-two-fifths">
+            {{signature}}
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-two-fifths">
+            Signed Data
+        </div>
+        <div class="column is-two-fifths">
+            {{signedData}}
+        </div>
+    </div>
+    </div>
+    
 </div>
