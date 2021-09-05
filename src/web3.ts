@@ -47,7 +47,7 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
         json = res.body;
       }
     } else {
-      json = JSON.parse(Buffer.from(tokenUri, 'base64').toString());
+      json = JSON.parse(Buffer.from(tokenUri.split(",")[1], 'base64').toString());
     }
 
     if (json.image) {

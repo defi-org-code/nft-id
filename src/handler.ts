@@ -41,9 +41,13 @@ export const writer_searchAndVerifyTweets = catchErrors.bind(
 
 (async () => {
 
-
-
-  //console.log(await writer_searchAndVerifyTweets({}, {}));
+  //
+  //
+  // console.log(await reader_extractDataFromNFTContract({
+  //   queryStringParameters: {
+  //     openseaUrl: 'https://opensea.io/assets/0x7403ac30de7309a0bf019cda8eec034a5507cbb3/380'
+  //   }
+  // }, {}));
 
 // console.log(await writer_createPendingRequest(
 //     {
