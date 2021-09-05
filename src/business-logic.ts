@@ -12,9 +12,11 @@ export const extractContractAddressAndTokenIdFromURL = (_url: string) => {
 };
 
 export const fetchVerifiedRequest = (event: any, context: any) => {
-  if (event.queryStringParameters?.openseaUrl) {
-    const tokenInfo = extractContractAddressAndTokenIdFromURL(event.queryStringParameters?.openseaUrl);
+  if (event.queryStringParameters?.url) {
+    const tokenInfo = extractContractAddressAndTokenIdFromURL(event.queryStringParameters?.url);
     return DataAccess.fetchVerifiedRequest(tokenInfo.contractAddress, tokenInfo.tokenId);
+  } else if (event.queryStringParameters?.twitterHandle) {
+    return DataAccess.fetchVerifiedRequestByTwitterHandle(event.queryStringParameters.twitterHandle);
   }
 
   return '';
@@ -24,7 +26,6 @@ export const createPendingRequest = async (event: any, context: any) => {
   const data = JSON.parse(event.body);
   const signature = data.signature;
   const json = data.json;
-  console.log("data", data);
   const tokenInfo = extractContractAddressAndTokenIdFromURL(data.openseaUrl);
 
   if (await verifyNFTOwnership(signature, json, tokenInfo)) {

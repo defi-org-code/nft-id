@@ -87,9 +87,8 @@ functions:
           request:
             parameters:
               querystrings:
-                signature: true
-                json: true
-                openseaUrl: true
+                twitterHandle: false
+                url: false
           method: get
           cors: true
   reader_extractDataFromNFTContract:
@@ -103,6 +102,8 @@ functions:
             parameters:
               querystrings:
                 openseaUrl: true
+          method: get
+          cors: true
 #  reader_fetchTopEntities:
 #    handler: dist/index.reader_fetchTopEntities
 #    fileSystemConfig: ${file(./serverless-fs.yml)}
