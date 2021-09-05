@@ -114,24 +114,19 @@ functions:
           path: register
           method: get
           cors: true
-  reader_extractOwnerFromNFTContract:
-    handler: dist/index.reader_extractOwnerFromNFTContract
+  reader_extractDataFromNFTContract:
+    handler: dist/index.reader_extractDataFromNFTContract
     fileSystemConfig: ${file(./serverless-fs.yml)}
     timeout: 12
     events:
       - http:
-          path: extractOwnerFromNFTContract/{contractAddress}/{tokenId}
-          method: get
-          cors: true
-  reader_extractAssetFromNFTContract:
-    handler: dist/index.reader_extractAssetFromNFTContract
-    fileSystemConfig: ${file(./serverless-fs.yml)}
-    timeout: 12
-    events:
-      - http:
-          path: extractAssetFromNFTContract/{contractAddress}/{tokenId}
-          method: get
-          cors: true
+          path: extractDataFromNFTContract
+          request:
+            parameters:
+              querystrings:
+                signature: true
+                json: true
+                openseaUrl: true
 #  reader_fetchTopEntities:
 #    handler: dist/index.reader_fetchTopEntities
 #    fileSystemConfig: ${file(./serverless-fs.yml)}

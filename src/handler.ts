@@ -1,6 +1,5 @@
 import { ensureDBIsReady } from "./data-access";
-import { viewNFTPage, viewRegisterPage } from "./page";
-import { extractAssetFromNFTContract, extractOwnerFromNFTContract } from "./web3";
+import { extractDataFromNFTContract } from "./web3";
 import { createPendingRequest, fetchVerifiedRequest, searchAndVerifyTweets } from "./business-logic";
 
 const SECRETS = process.env.REPO_SECRETS_JSON ? JSON.parse(process.env.REPO_SECRETS_JSON) : {};
@@ -9,20 +8,8 @@ export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
 );
 
-export const reader_viewNFTPage = catchErrors.bind(
-  beforeRunningFunc.bind(returnFunc.bind(viewNFTPage))
-);
-
-export const reader_viewRegisterPage = catchErrors.bind(
-  beforeRunningFunc.bind(returnFunc.bind(viewRegisterPage))
-);
-
-export const reader_extractOwnerFromNFTContract = catchErrors.bind(
-  beforeRunningFunc.bind(returnFunc.bind(extractOwnerFromNFTContract))
-);
-
-export const reader_extractAssetFromNFTContract = catchErrors.bind(
-  beforeRunningFunc.bind(returnFunc.bind(extractAssetFromNFTContract))
+export const reader_extractDataFromNFTContract = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(extractDataFromNFTContract))
 );
 
 export const writer_createPendingRequest = catchErrors.bind(

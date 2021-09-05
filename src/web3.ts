@@ -1,11 +1,21 @@
 const SECRETS = process.env.REPO_SECRETS_JSON ? JSON.parse(process.env.REPO_SECRETS_JSON) : {};
 
-import Web3 from 'web3';
-const provider = new Web3.providers.HttpProvider(SECRETS.WEB3_PROVIDER);
-const web3 = new Web3(provider);
+import Web3 from "web3";
 import { extractContractAddressAndTokenIdFromURL } from "./business-logic";
 import { AbiItem } from "web3-utils";
 import needle from "needle";
+
+const provider = new Web3.providers.HttpProvider(SECRETS.WEB3_PROVIDER);
+const web3 = new Web3(provider);
+
+export const extractDataFromNFTContract = async (event: any, context: any) => {
+  const owner = await extractOwnerFromNFTContract(event, context);
+  const asset = await extractAssetFromNFTContract(event, context);
+  return {
+    owner,
+    asset
+  };
+};
 
 export const extractOwnerFromNFTContract = async (event: any, context: any) => {
   const tokenInfo = extractContractAddressAndTokenIdFromURL(event.queryStringParameters?.openseaUrl);
