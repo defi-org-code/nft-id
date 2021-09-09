@@ -58,11 +58,11 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
   let currentRun = 0;
   if (event["taskresult"]) {
     const previousResult = JSON.parse(event["taskresult"].body);
-    currentRun = previousResult.currentRun;
+    currentRun = previousResult.currentRun || 0;
   }
 
   console.log("Running ", currentRun);
-  
+
   const sinceId = DataAccess.fetchSetting('sinceId')?.value;
   const tweets = await Twitter.getValidationTweets(bearerToken, sinceId);
   const filteredTweets = tweets.statuses.filter(t => t.id_str !== sinceId);
@@ -98,6 +98,7 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
 
   return {
     result: 'OK',
+    currentRun: currentRun + 1,
     continue: currentRun < 6
   };
 };
