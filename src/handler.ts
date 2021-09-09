@@ -55,6 +55,9 @@ async function catchErrors(this: any, event: any, context: any) {
     console.error(message);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       body: message,
     };
   }
