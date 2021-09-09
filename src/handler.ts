@@ -39,7 +39,8 @@ function success(result: any, _continue?: boolean) {
 }
 
 async function returnFunc(this: any, event: any, context: any) {
-  return success(await this(event, context));
+  const result = await this(event, context);
+  return success(result, result && result.continue);
 }
 
 async function beforeRunningFunc(this: any, event: any, context: any) {

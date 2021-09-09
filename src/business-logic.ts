@@ -22,7 +22,11 @@ export const fetchVerifiedRequest = (event: any, context: any) => {
   return '';
 };
 
+// TODO: Add bot every 10 seconds
+
 export const createPendingRequest = async (event: any, context: any) => {
+  // TODO: Return name of twitter and save in data
+  // TODO: Save twitter followers, following, banner, date joined
   const data = JSON.parse(event.body);
   const signature = data.signature;
   const json = data.json;
@@ -50,6 +54,15 @@ export const verifyNFTOwnership = async (signature: string, json: string, tokenI
 };
 
 export const searchAndVerifyTweets = async (bearerToken: string, event: any, context: any) => {
+
+  let currentRun = 0;
+  if (event["taskresult"]) {
+    const previousResult = JSON.parse(event["taskresult"].body);
+    currentRun = previousResult.currentRun;
+  }
+
+  console.log("Running ", currentRun);
+  
   const sinceId = DataAccess.fetchSetting('sinceId')?.value;
   const tweets = await Twitter.getValidationTweets(bearerToken, sinceId);
   const filteredTweets = tweets.statuses.filter(t => t.id_str !== sinceId);
@@ -83,5 +96,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
     DataAccess.upsertSetting('sinceId', tweets.statuses[0].id_str);
   }
 
-  return 'OK';
+  return {
+    result: 'OK',
+    continue: currentRun < 6
+  };
 };
