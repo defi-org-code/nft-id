@@ -1,6 +1,6 @@
 import { ensureDBIsReady } from "./data-access";
 import { extractDataFromNFTContract } from "./web3";
-import { createPendingRequest, fetchVerifiedRequest, searchAndVerifyTweets } from "./business-logic";
+import { createPendingRequest, fetchVerifiedRequest, isTweetExist, searchAndVerifyTweets } from "./business-logic";
 
 const SECRETS = process.env.REPO_SECRETS_JSON ? JSON.parse(process.env.REPO_SECRETS_JSON) : {};
 
@@ -10,6 +10,10 @@ export const reader_fetchVerifiedRequest = catchErrors.bind(
 
 export const reader_extractDataFromNFTContract = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(extractDataFromNFTContract))
+);
+
+export const reader_isTweetExist = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(isTweetExist.bind(null, SECRETS.BEARER_TOKEN)))
 );
 
 export const writer_createPendingRequest = catchErrors.bind(
@@ -64,7 +68,15 @@ async function catchErrors(this: any, event: any, context: any) {
   }
 }
 
-// TODO: Fetch if tweet exist or not
+// (async () => {
+//
+//   console.log(await reader_isTweetExist({
+//     pathParameters: {
+//       tweetId: "1437348198012567553"
+//     }
+//   }, {}));
+//
+// })();
 
 // (async () => {
 //

@@ -60,3 +60,18 @@ export const getUserInfo = async (
     throw new Error("Unsuccessful request");
   }
 };
+
+export const isTweetExist = async (
+  bearerToken: string,
+  tweetId: string
+): Promise<Array<any>> => {
+
+  const res = await needle("get", `https://api.twitter.com/1.1/statuses/show.json?id=${tweetId}`, null, {
+    headers: {
+      "User-Agent": "v2RecentSearchJS",
+      authorization: `Bearer ${bearerToken}`,
+    },
+  });
+
+  return res.body && !res.body.errors;
+};

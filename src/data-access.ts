@@ -9,12 +9,12 @@ let db: Database;
 
 export const ensureDBIsReady = () => {
   if (!db) {
-    if (fs.existsSync(DB_PATH)) { // TODO: remove
-      fs.unlinkSync(DB_PATH);
-    }
-    if (!fs.existsSync(HOME_DIR)) {
-      fs.mkdirsSync(HOME_DIR);
-    }
+    // if (fs.existsSync(DB_PATH)) {
+    //   fs.unlinkSync(DB_PATH);
+    // }
+    // if (!fs.existsSync(HOME_DIR)) {
+    //   fs.mkdirsSync(HOME_DIR);
+    // }
     db = sqlite3(DB_PATH);
 
     db.exec(

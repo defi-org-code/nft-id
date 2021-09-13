@@ -87,3 +87,12 @@ functions:
                 openseaUrl: true
           method: get
           cors: true
+  reader_isTweetExist:
+    handler: dist/index.reader_isTweetExist
+    fileSystemConfig: ${file(./serverless-fs.yml)}
+    timeout: 12
+    events:
+      - http:
+          path: isTweetExist/{tweetId}
+          method: get
+          cors: true

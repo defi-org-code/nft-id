@@ -115,3 +115,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
     continue: currentRun < 6
   };
 };
+
+export const isTweetExist = async (bearerToken: string, event: any, context: any) => {
+  const tweetId = event.pathParameters.tweetId;
+  return Twitter.isTweetExist(bearerToken, tweetId);
+};
