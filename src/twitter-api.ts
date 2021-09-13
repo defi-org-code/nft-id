@@ -64,7 +64,7 @@ export const getUserInfo = async (
 export const isTweetExist = async (
   bearerToken: string,
   tweetId: string
-): Promise<Array<any>> => {
+): Promise<boolean> => {
 
   const res = await needle("get", `https://api.twitter.com/1.1/statuses/show.json?id=${tweetId}`, null, {
     headers: {
