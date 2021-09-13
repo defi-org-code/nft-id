@@ -1,4 +1,8 @@
-import { extractAssetFromNFTContract, extractOwnerFromNFTContractByTokenInfo, verifySignature } from "./web3";
+import {
+  extractAssetFromNFTContractByTokenInfo,
+  extractOwnerFromNFTContractByTokenInfo,
+  verifySignature
+} from "./web3";
 import * as DataAccess from "./data-access";
 import * as Twitter from "./twitter-api";
 
@@ -22,8 +26,6 @@ export const fetchVerifiedRequest = (event: any, context: any) => {
   return '';
 };
 
-// TODO: Add bot every 10 seconds
-
 export const createPendingRequest = async (event: any, context: any) => {
   // TODO: Return name of twitter and save in data
   // TODO: Save twitter followers, following, banner, date joined
@@ -33,7 +35,7 @@ export const createPendingRequest = async (event: any, context: any) => {
   const tokenInfo = extractContractAddressAndTokenIdFromURL(data.openseaUrl);
 
   if (await verifyNFTOwnership(signature, json, tokenInfo)) {
-    const nftImage = await extractAssetFromNFTContract(event, context);
+    const nftImage = await extractAssetFromNFTContractByTokenInfo(tokenInfo);
     const twitterHandle = JSON.parse(json).twitterHandle;
     DataAccess.createPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, signature, json, twitterHandle, nftImage);
     return "OK";

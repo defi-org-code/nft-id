@@ -9,9 +9,9 @@ let db: Database;
 
 export const ensureDBIsReady = () => {
   if (!db) {
-    // if (fs.existsSync(DB_PATH)) {
-    //   fs.unlinkSync(DB_PATH);
-    // }
+    if (fs.existsSync(DB_PATH)) { // TODO: Remove
+      fs.unlinkSync(DB_PATH);
+    }
     if (!fs.existsSync(HOME_DIR)) {
       fs.mkdirsSync(HOME_DIR);
     }
@@ -63,7 +63,7 @@ export const fetchPendingRequest = (contractAddress: string, tokenId: string, tw
 export const fetchVerifiedRequest = (contractAddress: string, tokenId: string) => {
   return db
     .prepare(`select * from verified_requests where nft_contract_address = ? and nft_id = ?`)
-    .all(contractAddress, tokenId);
+    .get(contractAddress, tokenId);
 };
 
 export const fetchVerifiedRequestByTwitterHandle = (twitterHandle: string) => {

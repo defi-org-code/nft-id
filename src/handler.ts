@@ -63,3 +63,35 @@ async function catchErrors(this: any, event: any, context: any) {
     };
   }
 }
+
+// (async () => {
+//
+//   const body = JSON.stringify({
+//     "signature": "0xff7480f14a77ba0ba162856f804dc361a9c00ca0aeeb77f73bd8ae8c0b4966b07c26611adf3ebab9f7c2c6d588a5e38e811fb734b8466b50c1ed3893ffdb1b331b",
+//     "json": "{\"twitterHandle\":\"yakirrotem\"}",
+//     "openseaUrl": "https://opensea.io/assets/0x9a604220d37b69c09effccd2e8475740773e3daf/1650"
+//   });
+//
+//   await writer_createPendingRequest({
+//     body: body
+//   }, {})
+//
+// })();
+
+// (async () => {
+//
+//   await writer_searchAndVerifyTweets({}, {});
+//
+// })();
+//
+// (async () => {
+//
+//   console.log(await reader_fetchVerifiedRequest({
+//     queryStringParameters: {
+//       url: 'https://opensea.io/assets/0x9a604220d37b69c09effccd2e8475740773e3daf/1650'
+//     }
+//   }, {}));
+//
+// })();
+
+
