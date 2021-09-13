@@ -68,15 +68,15 @@ async function catchErrors(this: any, event: any, context: any) {
   }
 }
 
-(async () => {
-
-  console.log(await reader_isTweetExist({
-    pathParameters: {
-      tweetId: "143734819801256755322"
-    }
-  }, {}));
-
-})();
+// (async () => {
+//
+//   console.log(await reader_isTweetExist({
+//     pathParameters: {
+//       tweetId: "143734819801256755322"
+//     }
+//   }, {}));
+//
+// })();
 
 // (async () => {
 //

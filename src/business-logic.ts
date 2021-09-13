@@ -118,5 +118,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
 
 export const isTweetExist = async (bearerToken: string, event: any, context: any) => {
   const tweetId = event.pathParameters.tweetId;
-  return await Twitter.isTweetExist(bearerToken, tweetId);
+  const result = await Twitter.isTweetExist(bearerToken, tweetId);
+  return {
+    result
+  }
 };
