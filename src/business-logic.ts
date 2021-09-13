@@ -17,14 +17,14 @@ export const extractContractAddressAndTokenIdFromURL = (_url: string) => {
 };
 
 export const fetchVerifiedRequest = (event: any, context: any) => {
+  let result;
   if (event.queryStringParameters?.url) {
     const tokenInfo = extractContractAddressAndTokenIdFromURL(event.queryStringParameters?.url);
-    return DataAccess.fetchVerifiedRequest(tokenInfo.contractAddress, tokenInfo.tokenId);
+    result = DataAccess.fetchVerifiedRequest(tokenInfo.contractAddress, tokenInfo.tokenId);
   } else if (event.queryStringParameters?.twitterHandle) {
-    return DataAccess.fetchVerifiedRequestByTwitterHandle(event.queryStringParameters.twitterHandle);
+    result = DataAccess.fetchVerifiedRequestByTwitterHandle(event.queryStringParameters.twitterHandle);
   }
-
-  return '';
+  return result || '';
 };
 
 export const createPendingRequest = async (bearerToken: string, event: any, context: any) => {
