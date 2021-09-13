@@ -13,7 +13,7 @@ export const reader_extractDataFromNFTContract = catchErrors.bind(
 );
 
 export const writer_createPendingRequest = catchErrors.bind(
-  beforeRunningFunc.bind(returnFunc.bind(createPendingRequest))
+  beforeRunningFunc.bind(returnFunc.bind(createPendingRequest.bind(null, SECRETS.BEARER_TOKEN)))
 );
 
 export const writer_searchAndVerifyTweets = catchErrors.bind(
@@ -26,9 +26,9 @@ function success(result: any, _continue?: boolean) {
   const response: any = {
     statusCode: result == null ? 500 : 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "*"
     },
-    body: JSON.stringify(result),
+    body: JSON.stringify(result)
   };
 
   if (_continue !== undefined) {
@@ -57,12 +57,14 @@ async function catchErrors(this: any, event: any, context: any) {
     return {
       statusCode: 500,
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "*"
       },
-      body: message,
+      body: message
     };
   }
 }
+
+// TODO: Fetch if tweet exist or not
 
 // (async () => {
 //
@@ -72,9 +74,9 @@ async function catchErrors(this: any, event: any, context: any) {
 //     "openseaUrl": "https://opensea.io/assets/0x9a604220d37b69c09effccd2e8475740773e3daf/1650"
 //   });
 //
-//   await writer_createPendingRequest({
+//   console.log(await writer_createPendingRequest({
 //     body: body
-//   }, {})
+//   }, {}));
 //
 // })();
 
@@ -83,6 +85,7 @@ async function catchErrors(this: any, event: any, context: any) {
 //   await writer_searchAndVerifyTweets({}, {});
 //
 // })();
+
 //
 // (async () => {
 //

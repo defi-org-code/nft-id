@@ -9,12 +9,12 @@ let db: Database;
 
 export const ensureDBIsReady = () => {
   if (!db) {
-    // if (fs.existsSync(DB_PATH)) {
-    //   fs.unlinkSync(DB_PATH);
-    // }
-    // if (!fs.existsSync(HOME_DIR)) {
-    //   fs.mkdirsSync(HOME_DIR);
-    // }
+    if (fs.existsSync(DB_PATH)) { // TODO: remove
+      fs.unlinkSync(DB_PATH);
+    }
+    if (!fs.existsSync(HOME_DIR)) {
+      fs.mkdirsSync(HOME_DIR);
+    }
     db = sqlite3(DB_PATH);
 
     db.exec(
@@ -24,6 +24,7 @@ export const ensureDBIsReady = () => {
                   signature TEXT, 
                   json TEXT,
                   twitter_handle TEXT,
+                  twitter_user_info TEXT,
                   nft_image TEXT,
                   PRIMARY KEY (nft_contract_address, nft_id, twitter_handle)
               )`
@@ -36,8 +37,7 @@ export const ensureDBIsReady = () => {
                   json TEXT,
                   twitter_handle TEXT,
                   tweet_id TEXT,
-                  twitter_name TEXT,
-                  twitter_bio TEXT,
+                  twitter_user_info TEXT,
                   nft_image TEXT,
                   verified_time TEXT,
                   owner_public_key TEXT,
@@ -92,15 +92,17 @@ export const createPendingRequest = (
   signature: string,
   json: string,
   twitterHandle: string,
+  twitterUserInfo: string,
   nftImage: string
 ) => {
-  const pendingRequestPreparedStatement = db.prepare("insert into pending_requests values (?,?,?,?,?,?)");
+  const pendingRequestPreparedStatement = db.prepare("insert into pending_requests values (?,?,?,?,?,?,?)");
   pendingRequestPreparedStatement.run(
     contractAddress,
     tokenId,
     signature,
     json,
     twitterHandle,
+    twitterUserInfo,
     nftImage
   );
 };
@@ -111,13 +113,12 @@ export const createVerifiedRequest = (
   signature: string,
   json: string,
   twitterHandle: string,
+  twitterUserInfo: string,
   tweetId: string,
-  twitterName: string,
-  twitterBio: string,
   nftImage: string,
-  ownerPublicKey: string,
+  ownerPublicKey: string
 ) => {
-  const verifiedRequestPreparedStatement = db.prepare("insert into verified_requests values (?,?,?,?,?,?,?,?,?,datetime(),?)");
+  const verifiedRequestPreparedStatement = db.prepare("insert into verified_requests values (?,?,?,?,?,?,?,?,datetime(),?)");
   verifiedRequestPreparedStatement.run(
     contractAddress,
     tokenId,
@@ -125,8 +126,7 @@ export const createVerifiedRequest = (
     json,
     twitterHandle,
     tweetId,
-    twitterName,
-    twitterBio,
+    twitterUserInfo,
     nftImage,
     ownerPublicKey
   );

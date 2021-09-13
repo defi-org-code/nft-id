@@ -5,6 +5,7 @@ import {
 } from "./web3";
 import * as DataAccess from "./data-access";
 import * as Twitter from "./twitter-api";
+import { UserInfo } from "os";
 
 export const extractContractAddressAndTokenIdFromURL = (_url: string) => {
   const url: any = new URL(_url);
@@ -26,9 +27,7 @@ export const fetchVerifiedRequest = (event: any, context: any) => {
   return '';
 };
 
-export const createPendingRequest = async (event: any, context: any) => {
-  // TODO: Return name of twitter and save in data
-  // TODO: Save twitter followers, following, banner, date joined
+export const createPendingRequest = async (bearerToken: string, event: any, context: any) => {
   const data = JSON.parse(event.body);
   const signature = data.signature;
   const json = data.json;
@@ -37,8 +36,21 @@ export const createPendingRequest = async (event: any, context: any) => {
   if (await verifyNFTOwnership(signature, json, tokenInfo)) {
     const nftImage = await extractAssetFromNFTContractByTokenInfo(tokenInfo);
     const twitterHandle = JSON.parse(json).twitterHandle;
-    DataAccess.createPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, signature, json, twitterHandle, nftImage);
-    return "OK";
+    const userTwitterInfo = (await Twitter.getUserInfo(bearerToken, twitterHandle)).map(user => {
+      return {
+        profile_banner_url: user.profile_banner_url,
+        friends_count: user.friends_count,
+        followers_count: user.followers_count,
+        name: user.name,
+        create_at: user.create_at,
+        description: user.description,
+        verified: user.verified,
+        profile_background_color: user.profile_background_color,
+      };
+    })[0];
+    DataAccess.deletePreviousPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, twitterHandle);
+    DataAccess.createPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, signature, json, twitterHandle, JSON.stringify(userTwitterInfo), nftImage);
+    return userTwitterInfo;
   }
 
   return null;
@@ -83,9 +95,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
           pendingRequest.signature,
           pendingRequest.json,
           pendingRequest.twitter_handle,
+          pendingRequest.twitter_user_info,
           tweet.id_str,
-          tweet.user.screen_name,
-          tweet.user.description,
           pendingRequest.nft_image,
           ownerPublicKey
         );
