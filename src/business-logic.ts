@@ -24,7 +24,7 @@ export const fetchVerifiedRequest = (event: any, context: any) => {
   } else if (event.queryStringParameters?.twitterHandle) {
     result = DataAccess.fetchVerifiedRequestByTwitterHandle(event.queryStringParameters.twitterHandle);
   }
-  return result || '';
+  return result || {};
 };
 
 export const createPendingRequest = async (bearerToken: string, event: any, context: any) => {

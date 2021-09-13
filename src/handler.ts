@@ -103,7 +103,8 @@ async function catchErrors(this: any, event: any, context: any) {
 //
 //   console.log(await reader_fetchVerifiedRequest({
 //     queryStringParameters: {
-//       url: 'https://opensea.io/assets/0x9a604220d37b69c09effcdsdscd2e8475740773e3daf/1650'
+//       //url: 'https://opensea.io/assets/0x9a604220d37b69c09effcdsdscd2e8475740773e3daf/1650'
+//       twitterHandle: 'yakirrsdszdaotem'
 //     }
 //   }, {}));
 //
