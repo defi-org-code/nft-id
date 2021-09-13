@@ -13,7 +13,7 @@ export const getValidationTweets = async (
   // specify a search query, and any additional fields that are required
   // by default, only the Tweet ID and text fields are returned
   const params: any = {
-    q: `#nftidverify`,
+    q: `#mynftfyi`,
     result_type: "recent",
     include_entities: true,
     tweet_mode: "extended",
