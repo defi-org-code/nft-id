@@ -110,4 +110,14 @@ async function catchErrors(this: any, event: any, context: any) {
 //
 // })();
 
+// (async () => {
+//
+//   console.log(await reader_extractDataFromNFTContract({
+//     queryStringParameters: {
+//       openseaUrl: 'https://opensea.io/assets/0xb9e759022d58f3483ca5e0874f7d4f23a1d0738a/521'
+//     }
+//   }, {}));
+//
+// })();
+
 

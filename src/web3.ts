@@ -41,8 +41,8 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
   let json;
 
   try {
-    if (tokenUri.startsWith('http')) {
-      let res = await needle('get', tokenUri.replace('ipfs://','https://ipfs.io/ipfs/'));
+    if (tokenUri.startsWith('http') || tokenUri.startsWith('ipfs')) {
+      let res = await needle('get', tokenUri.replace('ipfs://','https://ipfs.io/'));
       if (res.body) {
         json = res.body;
       }
@@ -51,7 +51,7 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
     }
 
     if (json.image) {
-      response = json.image.replace('ipfs://','https://ipfs.io/ipfs/');
+      response = json.image.replace('ipfs://','https://ipfs.io/');
     }
 
   } catch (ignore) {
