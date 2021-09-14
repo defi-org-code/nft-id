@@ -81,9 +81,9 @@ async function catchErrors(this: any, event: any, context: any) {
 // (async () => {
 //
 //   const body = JSON.stringify({
-//     "signature": "0xff7480f14a77ba0ba162856f804dc361a9c00ca0aeeb77f73bd8ae8c0b4966b07c26611adf3ebab9f7c2c6d588a5e38e811fb734b8466b50c1ed3893ffdb1b331b",
-//     "json": "{\"twitterHandle\":\"yakirrotem\"}",
-//     "openseaUrl": "https://opensea.io/assets/0x9a604220d37b69c09effccd2e8475740773e3daf/1650"
+//     "signature": "0x1de4c2e122182a8d570f2d264f985d95cda76751998713144b7d7778b55224706294d12e74eaeba0b59f6a15a39969111712b51c266a66605da1657d42c50aef1b",
+//     "json": "{\"twitterHandle\":\"denis6421\"}",
+//     "openseaUrl": "https://opensea.io/assets/0xb9e759022d58f3483ca5e0874f7d4f23a1d0738a/520"
 //   });
 //
 //   console.log(await writer_createPendingRequest({
@@ -91,7 +91,7 @@ async function catchErrors(this: any, event: any, context: any) {
 //   }, {}));
 //
 // })();
-
+//
 // (async () => {
 //
 //   await writer_searchAndVerifyTweets({}, {});

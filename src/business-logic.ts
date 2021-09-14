@@ -5,7 +5,6 @@ import {
 } from "./web3";
 import * as DataAccess from "./data-access";
 import * as Twitter from "./twitter-api";
-import { UserInfo } from "os";
 
 export const extractContractAddressAndTokenIdFromURL = (_url: string) => {
   const url: any = new URL(_url);
@@ -78,17 +77,17 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
   console.log("Running ", currentRun);
 
   const sinceId = DataAccess.fetchSetting('sinceId')?.value;
-  const tweets = await Twitter.getValidationTweets(bearerToken, sinceId);
-  const filteredTweets = tweets.statuses.filter(t => t.id_str !== sinceId);
+  const result = await Twitter.getValidationTweets(bearerToken, sinceId);
+  const filteredTweets = result.tweets.filter((t:any) => t.id !== sinceId);
 
   for (const tweet of filteredTweets) {
     try {
-      const tokenInfo = extractContractAddressAndTokenIdFromURL(tweet.entities.urls[0].expanded_url);
-      const pendingRequest = DataAccess.fetchPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.user.screen_name);
+      const tokenInfo = extractContractAddressAndTokenIdFromURL(tweet.url);
+      const pendingRequest = DataAccess.fetchPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.username);
       const ownerPublicKey = await verifyNFTOwnership(pendingRequest.signature, pendingRequest.json, tokenInfo);
       if (ownerPublicKey) {
-        DataAccess.deletePreviousPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.user.screen_name);
-        DataAccess.deletePreviousVerifiedRequest(tweet.user.screen_name);
+        DataAccess.deletePreviousPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.username);
+        DataAccess.deletePreviousVerifiedRequest(tweet.username);
         DataAccess.createVerifiedRequest(
           tokenInfo.contractAddress,
           tokenInfo.tokenId,
@@ -96,7 +95,7 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
           pendingRequest.json,
           pendingRequest.twitter_handle,
           pendingRequest.twitter_user_info,
-          tweet.id_str,
+          tweet.id,
           pendingRequest.nft_image,
           ownerPublicKey
         );
@@ -105,8 +104,8 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
     }
   }
 
-  if (tweets.statuses.length) {
-    DataAccess.upsertSetting('sinceId', tweets.statuses[0].id_str);
+  if (filteredTweets.length) {
+    DataAccess.upsertSetting('sinceId', result.max_id_str);
   }
 
   return {

@@ -1,41 +1,60 @@
 // Search for Tweets within the past seven days
 // https://developer.twitter.com/en/docs/twitter-api/tweets/search/quick-start/recent-search
 
+import Twitter from 'twitter-lite';
 import needle from "needle";
-import { RecentResults, UserResponse } from "./types";
+
+const client = new Twitter({
+  version: "2", // version "1.1" is the default (change for v2)
+  extension: false, // true is the default (this must be set to false for v2 endpoints)
+  consumer_key: "", // from Twitter.
+  consumer_secret: "", // from Twitter.
+  access_token_key: "", // from your User (oauth_token)
+  access_token_secret: "", // from your User (oauth_token_secret)
+});
 
 export const getValidationTweets = async (
   bearerToken: string,
   sinceId?: string
-): Promise<RecentResults> => {
+): Promise<any> => {
 
   // Edit query parameters below
   // specify a search query, and any additional fields that are required
   // by default, only the Tweet ID and text fields are returned
   const params: any = {
-    q: `#mynftfyi`,
-    result_type: "recent",
-    include_entities: true,
-    tweet_mode: "extended",
-    count: 100,
+    query: `#mynftfyi`,
+    max_results: 100,
+    "tweet.fields": "entities",
+    expansions: "author_id"
   };
 
   if (sinceId) {
     params.since_id = sinceId;
   }
 
-  const res = await needle("get", "https://api.twitter.com/1.1/search/tweets.json", params, {
-    headers: {
-      "User-Agent": "v2RecentSearchJS",
-      authorization: `Bearer ${bearerToken}`,
-    },
-  });
+  try {
 
-  if (res.body) {
-    return res.body;
-  } else {
-    throw new Error("Unsuccessful request");
+    const results:any = await client.get("tweets/search/recent", params);
+
+    if (results.data && results.data.length > 100) {
+      console.log("Too many people");
+    }
+
+    return {
+      max_id_str: results.meta.newest_id,
+      tweets: results.data ? results.data.map((result:any) => {
+        return {
+          id: result.id,
+          username: results.includes && results.includes.users ? results.includes.users.find((u:any) => u.id === result.author_id).username : null,
+          url: result.entities && result.entities.urls && result.entities.urls.length ? result.entities.urls[0].expanded_url : null
+        };
+      }) : []
+    };
+
+  } catch (e) {
+    console.log(e);
   }
+
 };
 
 export const getUserInfo = async (
