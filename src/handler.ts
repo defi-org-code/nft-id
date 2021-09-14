@@ -81,9 +81,9 @@ async function catchErrors(this: any, event: any, context: any) {
 // (async () => {
 //
 //   const body = JSON.stringify({
-//     "signature": "0x1de4c2e122182a8d570f2d264f985d95cda76751998713144b7d7778b55224706294d12e74eaeba0b59f6a15a39969111712b51c266a66605da1657d42c50aef1b",
-//     "json": "{\"twitterHandle\":\"denis6421\"}",
-//     "openseaUrl": "https://opensea.io/assets/0xb9e759022d58f3483ca5e0874f7d4f23a1d0738a/520"
+//     "signature": "0xef6e6cda1d61e5e4299ea644c012794f23e4415bf65d7d054dbc211115d07ad8638af8fd97a4eca4e0f0290771a285096005966e11d81b819eff7628029387851c",
+//     "json": "{\"twitterHandle\":\"mynft_fyi\"}",
+//     "openseaUrl": "https://opensea.io/assets/0xbd3531da5cf5857e7cfaa92426877b022e612cf8/5222"
 //   });
 //
 //   console.log(await writer_createPendingRequest({

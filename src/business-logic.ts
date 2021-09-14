@@ -83,7 +83,7 @@ export const searchAndVerifyTweets = async (bearerToken: string, event: any, con
   for (const tweet of filteredTweets) {
     try {
       const tokenInfo = extractContractAddressAndTokenIdFromURL(tweet.url);
-      const pendingRequest = DataAccess.fetchPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.username);
+      const pendingRequest = DataAccess.fetchPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.username.toLowerCase());
       const ownerPublicKey = await verifyNFTOwnership(pendingRequest.signature, pendingRequest.json, tokenInfo);
       if (ownerPublicKey) {
         DataAccess.deletePreviousPendingRequest(tokenInfo.contractAddress, tokenInfo.tokenId, tweet.username);
