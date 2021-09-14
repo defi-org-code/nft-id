@@ -4,13 +4,15 @@
 import Twitter from 'twitter-lite';
 import needle from "needle";
 
+const SECRETS = process.env.REPO_SECRETS_JSON ? JSON.parse(process.env.REPO_SECRETS_JSON) : {};
+
 const client = new Twitter({
   version: "2", // version "1.1" is the default (change for v2)
   extension: false, // true is the default (this must be set to false for v2 endpoints)
-  consumer_key: "", // from Twitter.
-  consumer_secret: "", // from Twitter.
-  access_token_key: "", // from your User (oauth_token)
-  access_token_secret: "", // from your User (oauth_token_secret)
+  consumer_key: SECRETS.CONSUMER_KEY, // from Twitter.
+  consumer_secret: SECRETS.CONSUMER_SECRET, // from Twitter.
+  access_token_key: SECRETS.ACCESS_TOKEN_KEY, // from your User (oauth_token)
+  access_token_secret: SECRETS.ACCESS_TOKEN_SECRET, // from your User (oauth_token_secret)
 });
 
 export const getValidationTweets = async (
