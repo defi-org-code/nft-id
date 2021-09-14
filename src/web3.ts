@@ -42,7 +42,7 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
 
   try {
     if (tokenUri.startsWith('http') || tokenUri.startsWith('ipfs')) {
-      let res = await needle('get', tokenUri.replace('ipfs://','https://ipfs.io/'));
+      let res = await needle('get', _replaceIPFS(tokenUri));
       if (res.body) {
         json = res.body;
       }
@@ -51,7 +51,7 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
     }
 
     if (json.image) {
-      response = json.image.replace('ipfs://','https://ipfs.io/');
+      response = _replaceIPFS(json.image);
     }
 
   } catch (ignore) {
@@ -63,4 +63,8 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
 
 export const verifySignature = (signature: string, json: string): string => {
   return web3.eth.accounts.recover(json, signature);
+};
+
+const _replaceIPFS = (uri:string):string => {
+  return uri.replace(/^ipfs:\/\/(?:ipfs\/)?/g, "https://ipfs.io/ipfs/");
 };
