@@ -81,22 +81,26 @@ async function catchErrors(this: any, event: any, context: any) {
 // (async () => {
 //
 //   const body = JSON.stringify({
-//     "signature": "0xef6e6cda1d61e5e4299ea644c012794f23e4415bf65d7d054dbc211115d07ad8638af8fd97a4eca4e0f0290771a285096005966e11d81b819eff7628029387851c",
-//     "json": "{\"twitterHandle\":\"mynft_fyi\"}",
-//     "openseaUrl": "https://opensea.io/assets/0xbd3531da5cf5857e7cfaa92426877b022e612cf8/5222"
+//     "signature": "0x126e69d89fa4214b700968cca0481efc1213f6ab2c2ceea2ab4dcc7e4228e64f6ad6e254c0d18323a75c8f52e467904ea3a2703a622e5256fd40f72a5efd4f011b",
+//     "json": "{\"twitterHandle\":\"YakirRotem\"}",
+//     "openseaUrl": "https://opensea.io/assets/0x9a604220d37b69c09effccd2e8475740773e3daf/1650"
 //   });
 //
 //   console.log(await writer_createPendingRequest({
 //     body: body
 //   }, {}));
 //
+//   await writer_searchAndVerifyTweets({}, {});
+//
 // })();
+
 //
 // (async () => {
 //
 //   await writer_searchAndVerifyTweets({}, {});
 //
 // })();
+
 //
 //
 // (async () => {

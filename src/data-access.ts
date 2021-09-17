@@ -56,19 +56,19 @@ export const ensureDBIsReady = () => {
 
 export const fetchPendingRequest = (contractAddress: string, tokenId: string, twitterHandle: string) => {
   return db
-    .prepare(`select * from pending_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ?`)
+    .prepare(`select * from pending_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ? COLLATE NOCASE`)
     .get(contractAddress, tokenId, twitterHandle);
 };
 
 export const fetchVerifiedRequest = (contractAddress: string, tokenId: string) => {
   return db
-    .prepare(`select * from verified_requests where nft_contract_address = ? and nft_id = ?`)
+    .prepare(`select * from verified_requests where nft_contract_address = ? and nft_id = ? COLLATE NOCASE`)
     .get(contractAddress, tokenId);
 };
 
 export const fetchVerifiedRequestByTwitterHandle = (twitterHandle: string) => {
   return db
-    .prepare(`select * from verified_requests where twitter_handle = ?`)
+    .prepare(`select * from verified_requests where twitter_handle = ? COLLATE NOCASE`)
     .get(twitterHandle);
 };
 
@@ -137,7 +137,7 @@ export const deletePreviousPendingRequest = (
   tokenId: string,
   twitterHandle: string,
 ) => {
-  const deletePendingRequestPreparedStatement = db.prepare("delete from pending_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ?");
+  const deletePendingRequestPreparedStatement = db.prepare("delete from pending_requests where nft_contract_address = ? and nft_id = ? and twitter_handle = ? COLLATE NOCASE");
   deletePendingRequestPreparedStatement.run(
     contractAddress,
     tokenId,
@@ -148,7 +148,7 @@ export const deletePreviousPendingRequest = (
 export const deletePreviousVerifiedRequest = (
   twitterHandle: string,
 ) => {
-  const deleteVerifiedRequestPreparedStatement = db.prepare("delete from verified_requests where twitter_handle = ?");
+  const deleteVerifiedRequestPreparedStatement = db.prepare("delete from verified_requests where twitter_handle = ? COLLATE NOCASE");
   deleteVerifiedRequestPreparedStatement.run(
     twitterHandle
   );
