@@ -48,7 +48,7 @@ export const getValidationTweets = async (
         return {
           id: result.id,
           username: results.includes && results.includes.users ? results.includes.users.find((u:any) => u.id === result.author_id).username.toLowerCase() : null,
-          url: result.entities && result.entities.urls && result.entities.urls.length ? result.entities.urls[0].expanded_url : null
+          url: result.entities && result.entities.urls && result.entities.urls.length > 1 ? result.entities.urls[1].expanded_url : null
         };
       }) : []
     };
