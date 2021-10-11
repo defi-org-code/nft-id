@@ -42,7 +42,9 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
 
   try {
     if (tokenUri.startsWith('http') || tokenUri.startsWith('ipfs')) {
-      let res = await needle('get', _replaceIPFS(tokenUri));
+      let res = await needle('get', _replaceIPFS(tokenUri), {
+        follow_max: 5
+      });
       if (res.body) {
         json = res.body;
       }

@@ -113,12 +113,12 @@ async function catchErrors(this: any, event: any, context: any) {
 //   }, {}));
 //
 // })();
-
+//
 // (async () => {
 //
 //   console.log(await reader_extractDataFromNFTContract({
 //     queryStringParameters: {
-//       openseaUrl: 'https://opensea.io/assets/0xb9e759022d58f3483ca5e0874f7d4f23a1d0738a/521'
+//       openseaUrl: 'https://opensea.io/assets/0x3a8778a58993ba4b941f85684d74750043a4bb5f/7818'
 //     }
 //   }, {}));
 //
