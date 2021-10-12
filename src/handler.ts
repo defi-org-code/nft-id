@@ -1,5 +1,5 @@
 import { ensureDBIsReady } from "./data-access";
-import { extractDataFromNFTContract } from "./web3";
+import { extractAssetFromNFTContract, extractOwnerFromNFTContract } from "./web3";
 import { createPendingRequest, fetchVerifiedRequest, isTweetExist, searchAndVerifyTweets } from "./business-logic";
 
 const SECRETS = process.env.REPO_SECRETS_JSON ? JSON.parse(process.env.REPO_SECRETS_JSON) : {};
@@ -8,8 +8,12 @@ export const reader_fetchVerifiedRequest = catchErrors.bind(
   beforeRunningFunc.bind(returnFunc.bind(fetchVerifiedRequest))
 );
 
-export const reader_extractDataFromNFTContract = catchErrors.bind(
-  beforeRunningFunc.bind(returnFunc.bind(extractDataFromNFTContract))
+export const reader_extractOwnerFromNFTContract = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(extractOwnerFromNFTContract))
+);
+
+export const reader_extractAssetFromNFTContract = catchErrors.bind(
+  beforeRunningFunc.bind(returnFunc.bind(extractAssetFromNFTContract))
 );
 
 export const reader_isTweetExist = catchErrors.bind(
@@ -108,20 +112,31 @@ async function catchErrors(this: any, event: any, context: any) {
 //   console.log(await reader_fetchVerifiedRequest({
 //     queryStringParameters: {
 //       //url: 'https://opensea.io/assets/0x9a604220d37b69c09effcdsdscd2e8475740773e3daf/1650'
-//       twitterHandle: 'yakirrsdszdaotem'
+//       twitterHandle: 'YakirRotem'
 //     }
 //   }, {}));
 //
 // })();
 //
 // (async () => {
-//
-//   console.log(await reader_extractDataFromNFTContract({
-//     queryStringParameters: {
-//       openseaUrl: 'https://opensea.io/assets/0x3a8778a58993ba4b941f85684d74750043a4bb5f/7818'
-//     }
-//   }, {}));
-//
+
+  //
+  // console.log(await extractOwnerFromNFTContractByTokenInfo({
+  //   tokenId: "4151474338993718144798529208760612916241330120402653879715629614761143959553",
+  //   contractAddress: "0x495f947276749ce646f68ac8c248420045cb7b5e"
+  // }, "0x092da6b586b2bf408d4a494cea83f3bab31295d0"));
+  //
+  // console.log(await extractAssetFromNFTContractByTokenInfo({
+  //   tokenId: "4151474338993718144798529208760612916241330120402653879715629614761143959553",
+  //   contractAddress: "0x495f947276749ce646f68ac8c248420045cb7b5e"
+  // }));
+
+  // console.log(await reader_extractDataFromNFTContract({
+  //   queryStringParameters: {
+  //     openseaUrl: 'https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/4151474338993718144798529208760612916241330120402653879715629614761143959553'
+  //   }
+  // }, {}));
+
 // })();
 
 

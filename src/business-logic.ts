@@ -15,13 +15,26 @@ export const extractContractAddressAndTokenIdFromURL = (_url: string) => {
   };
 };
 
-export const fetchVerifiedRequest = (event: any, context: any) => {
+export const fetchVerifiedRequest = async (event: any, context: any) => {
   let result;
   if (event.queryStringParameters?.url) {
     const tokenInfo = extractContractAddressAndTokenIdFromURL(event.queryStringParameters?.url);
     result = DataAccess.fetchVerifiedRequest(tokenInfo.contractAddress, tokenInfo.tokenId);
   } else if (event.queryStringParameters?.twitterHandle) {
     result = DataAccess.fetchVerifiedRequestByTwitterHandle(event.queryStringParameters.twitterHandle);
+  }
+  if (!result.nft_image) {
+    // Bug, temp fix
+    const nftImage = await extractAssetFromNFTContractByTokenInfo({
+      tokenId: result.nft_id,
+      contractAddress: result.nft_contract_address
+    });
+    DataAccess.updateVerifyRequest(
+      result.nft_contract_address,
+      result.nft_id,
+      result.twitter_handle,
+      nftImage
+    );
   }
   return result || {};
 };
@@ -34,6 +47,9 @@ export const createPendingRequest = async (bearerToken: string, event: any, cont
 
   if (await verifyNFTOwnership(signature, json, tokenInfo)) {
     const nftImage = await extractAssetFromNFTContractByTokenInfo(tokenInfo);
+    if (!nftImage) {
+      return null;
+    }
     const twitterHandle = JSON.parse(json).twitterHandle;
     const userTwitterInfo = (await Twitter.getUserInfo(bearerToken, twitterHandle)).map(user => {
       return {
@@ -58,7 +74,7 @@ export const createPendingRequest = async (bearerToken: string, event: any, cont
 export const verifyNFTOwnership = async (signature: string, json: string, tokenInfo: any): Promise<string | null> => {
   try {
     const publicKey = verifySignature(signature, json); // Will throw exception if signature not matches json
-    if (publicKey === (await extractOwnerFromNFTContractByTokenInfo(tokenInfo))) {
+    if (publicKey === (await extractOwnerFromNFTContractByTokenInfo(tokenInfo, publicKey))) {
       return publicKey;
     }
   } catch (ignore) {
