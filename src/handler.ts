@@ -118,18 +118,19 @@ async function catchErrors(this: any, event: any, context: any) {
 //
 // })();
 //
-// (async () => {
+(async () => {
 
-  //
+
   // console.log(await extractOwnerFromNFTContractByTokenInfo({
   //   tokenId: "4151474338993718144798529208760612916241330120402653879715629614761143959553",
   //   contractAddress: "0x495f947276749ce646f68ac8c248420045cb7b5e"
   // }, "0x092da6b586b2bf408d4a494cea83f3bab31295d0"));
-  //
-  // console.log(await extractAssetFromNFTContractByTokenInfo({
-  //   tokenId: "4151474338993718144798529208760612916241330120402653879715629614761143959553",
-  //   contractAddress: "0x495f947276749ce646f68ac8c248420045cb7b5e"
-  // }));
+
+  // console.log(await reader_extractAssetFromNFTContract({
+  //     queryStringParameters: {
+  //       openseaUrl: 'https://opensea.io/assets/matic/0x7227e371540cf7b8e512544ba6871472031f3335/158456337203380326785346844900'
+  //     }
+  // }, {}));
 
   // console.log(await reader_extractDataFromNFTContract({
   //   queryStringParameters: {
@@ -137,6 +138,6 @@ async function catchErrors(this: any, event: any, context: any) {
   //   }
   // }, {}));
 
-// })();
+})();
 
 

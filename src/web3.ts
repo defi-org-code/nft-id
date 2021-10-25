@@ -33,9 +33,11 @@ export const extractAssetFromNFTContract = async (event: any, context: any) => {
 export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => {
   let tokenUri: any;
   try {
+    // ERC721
     const contract = new web3.eth.Contract(erc721ABI, tokenInfo.contractAddress);
     tokenUri = await contract.methods.tokenURI(tokenInfo.tokenId).call();
   } catch (ignore) {
+    // ERC1155
     const contract = new web3.eth.Contract(erc1155ABI, tokenInfo.contractAddress);
     tokenUri = await contract.methods.uri(tokenInfo.tokenId).call();
     tokenUri = tokenUri.replace('/0x{id}', `/${tokenInfo.tokenId}?format=json`);
@@ -50,7 +52,11 @@ export const extractAssetFromNFTContractByTokenInfo = async (tokenInfo: any) => 
         follow_max: 5
       });
       if (res.body) {
-        json = res.body;
+        if (Buffer.isBuffer(res.body)) {
+          json = JSON.parse(res.body.toString());
+        } else {
+          json = res.body;
+        }
       }
     } else {
       json = JSON.parse(Buffer.from(tokenUri.split(",")[1], 'base64').toString());

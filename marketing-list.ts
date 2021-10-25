@@ -71,14 +71,14 @@ async function iteratingToUserIds() {
 
   for (let i = 0; i < users.length; i += BATCH_SIZE) {
     console.log("Going over batch", i);
-    let subArray = users.slice(i, BATCH_SIZE);
+    let subArray = users.slice(i, BATCH_SIZE + i);
     let res = await _usersMeta(subArray);
     for (const user of res.body) {
       console.log("going over user", user.screen_name);
       try {
         await saveUser(user);
       } catch (e) {
-        console.log("Failed to fetch ", user.screen_name);
+        console.log("Failed to fetch ", user.screen_name, e);
       }
     }
   }
